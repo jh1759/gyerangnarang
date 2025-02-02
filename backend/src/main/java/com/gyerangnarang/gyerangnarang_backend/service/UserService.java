@@ -24,8 +24,10 @@ public class UserService {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setIsActive(true);  // ✅ 기본적으로 활성화 상태
         return userRepository.save(user);
     }
+
 
     public User loginUser(String email, String password) {
         Optional<User> user = userRepository.findByEmail(email);

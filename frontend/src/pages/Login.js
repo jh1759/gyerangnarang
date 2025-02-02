@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Login({ setIsAuthenticated }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -17,6 +17,7 @@ function Login() {
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem("user", JSON.stringify(data));
+                setIsAuthenticated(true); // ✅ 로그인 후 즉시 상태 업데이트
                 navigate("/");
             } else {
                 alert("로그인 실패! 이메일 또는 비밀번호를 확인해주세요.");

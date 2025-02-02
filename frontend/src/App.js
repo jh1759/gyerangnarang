@@ -6,27 +6,27 @@ import LogoutButton from "./components/LogoutButton";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("user"));
 
     useEffect(() => {
-        const user = localStorage.getItem("user");
-        setIsAuthenticated(!!user);
+        const checkAuth = () => {
+            setIsAuthenticated(!!localStorage.getItem("user"));
+        };
+
+        window.addEventListener("storage", checkAuth); // ✅ localStorage 변경 감지
+        return () => window.removeEventListener("storage", checkAuth);
     }, []);
 
     return (
         <Router>
             <div>
                 <h1>계랑나랑</h1>
-                {isAuthenticated && <LogoutButton />} {/* 로그인 상태일 때만 로그아웃 버튼 표시 */}
+                {isAuthenticated && <LogoutButton setIsAuthenticated={setIsAuthenticated} />} {/* ✅ 상태 업데이트 */}
             </div>
             <Routes>
                 <Route path="/signup" element={isAuthenticated ? <Navigate to="/" /> : <Signup />} />
                 <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
-
-                {/* ✅ 로그아웃 시 자동으로 /login으로 이동 */}
                 <Route path="/logout" element={<Navigate to="/login" />} />
-
-                {/* ✅ 보호된 페이지 (로그인한 유저만 접근 가능) */}
                 <Route path="/" element={<ProtectedRoute><h1>홈페이지</h1></ProtectedRoute>} />
             </Routes>
         </Router>

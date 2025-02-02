@@ -4,12 +4,11 @@ FROM openjdk:17-jdk-slim
 # 작업 디렉토리 설정
 WORKDIR /app
 
-# Gradle Wrapper 관련 파일 먼저 복사
-COPY backend/gradlew backend/gradlew.bat backend/gradle /app/
-RUN chmod +x /app/gradlew  # 실행 권한 부여
+# 현재 디렉토리의 모든 파일 복사 (backend/ 내부에서 빌드됨)
+COPY . /app
 
-# 나머지 프로젝트 파일 복사
-COPY backend /app
+# gradlew 실행 권한 부여
+RUN chmod +x /app/gradlew
 
 # Gradle 빌드 실행
 RUN /app/gradlew bootJar

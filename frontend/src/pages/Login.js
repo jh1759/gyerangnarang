@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleLogin = async () => {
         try {
@@ -14,9 +16,8 @@ function Login() {
 
             if (response.ok) {
                 const data = await response.json();
-                alert("로그인 성공!");
                 localStorage.setItem("user", JSON.stringify(data));
-                window.location.href = "/";
+                navigate("/");
             } else {
                 alert("로그인 실패! 이메일 또는 비밀번호를 확인해주세요.");
             }
@@ -27,11 +28,33 @@ function Login() {
     };
 
     return (
-        <div>
-            <h2>로그인</h2>
-            <input type="email" placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <input type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <button onClick={handleLogin}>로그인</button>
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            <div className="bg-white p-8 rounded-lg shadow-md w-96">
+                <h2 className="text-2xl font-bold text-center mb-6">로그인</h2>
+                <input
+                    type="email"
+                    placeholder="이메일"
+                    className="w-full px-4 py-2 border rounded-md mb-4"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
+                    type="password"
+                    placeholder="비밀번호"
+                    className="w-full px-4 py-2 border rounded-md mb-4"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                    onClick={handleLogin}
+                    className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
+                >
+                    로그인
+                </button>
+                <p className="mt-4 text-center">
+                    계정이 없으신가요? <a href="/signup" className="text-blue-500">회원가입</a>
+                </p>
+            </div>
         </div>
     );
 }

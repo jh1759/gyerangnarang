@@ -27,9 +27,11 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    private String firstName;
-    private String lastName;
-    private Boolean isActive = true;
+    private String firstName;  // ✅ 추가
+    private String lastName;   // ✅ 추가
+
+    @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private Boolean isActive = true;  // ✅ 추가
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate = LocalDateTime.now();

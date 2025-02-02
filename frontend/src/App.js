@@ -21,11 +21,11 @@ function App() {
         <Router>
             <div>
                 <h1>계랑나랑</h1>
-                {isAuthenticated && <LogoutButton setIsAuthenticated={setIsAuthenticated} />} {/* ✅ 상태 업데이트 */}
+                {isAuthenticated && <LogoutButton setIsAuthenticated={setIsAuthenticated} />} {/* ✅ 상태 즉시 업데이트 */}
             </div>
             <Routes>
                 <Route path="/signup" element={isAuthenticated ? <Navigate to="/" /> : <Signup />} />
-                <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
+                <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login setIsAuthenticated={setIsAuthenticated} />} />
                 <Route path="/logout" element={<Navigate to="/login" />} />
                 <Route path="/" element={<ProtectedRoute><h1>홈페이지</h1></ProtectedRoute>} />
             </Routes>
